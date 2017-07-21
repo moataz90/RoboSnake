@@ -50,11 +50,12 @@ def get_command_params(gait):
 
 
 def main():
-    # pygame initialization stuff
-    pygame.init()
-    pygame.joystick.init()
+
     # check for controller. if no controller found, switch to mouse control
     try:
+        # pygame initialization stuff
+        pygame.init()
+        pygame.joystick.init()
         controller = pygame.joystick.Joystick(0)
         controller.init()
         mode = "controller"
@@ -107,14 +108,15 @@ def main():
             angles[j] = round(absolute_angles[j])
 
         # update joint angles file
-        try:
-            angle_file = open('joint_angles.txt','w')
-            for k in range(0, num_joints-1):
-                angle_file.write(str(k)+":"+str(angles[k]*10)+"&")
-            angle_file.write(str(num_joints-1)+":"+str(angles[num_joints-1]*10))
-            angle_file.close()
-        except:
-            pass
+        if gait != '':
+            try:
+                angle_file = open('joint_angles.txt','w')
+                for k in range(0, num_joints-1):
+                    angle_file.write(str(k)+":"+str(angles[k]*10)+"&")
+                angle_file.write(str(num_joints-1)+":"+str(angles[num_joints-1]*10))
+                angle_file.close()
+            except:
+                pass
 
         # short time delay for smoothness of motion
         time.sleep(0.01)
