@@ -4,12 +4,6 @@
 
 import time
 
-# using pygame python library (pygame.org)
-import pygame
-
-# define number of joints
-num_joints = 6
-
 # substitute class for real snake robot
 from SnakeSubstitute import SnakeSubstitute
 
@@ -50,8 +44,17 @@ def get_command_params(gait):
 
 
 def main():
+    # read number of joints from text file
+    number_file = open('numberOfJoints.txt', 'r')
+    num_joints = int(number_file.read())
+    number_file.close()
 
     # check for controller. if no controller found, switch to mouse control
+    try:
+        # using pygame python library (pygame.org)
+        import pygame
+    except:
+        print("piGame Failed")
     try:
         # pygame initialization stuff
         pygame.init()
@@ -59,6 +62,7 @@ def main():
         controller = pygame.joystick.Joystick(0)
         controller.init()
         mode = "controller"
+        print("controller")
     except:
         mode = "mouse"
 
@@ -79,8 +83,10 @@ def main():
             # possible gaits: Forward, Roll
             if hat == (0, 1):
                 gait = 'Forward'
+                print("hat 0 1")
             elif hat == (1, 0):
                 gait = 'Roll'
+                print("hat 1 0")
             elif controller.get_axis(1) < -0.7:
                 gait = 'FastForward'
             else:

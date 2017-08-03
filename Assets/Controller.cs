@@ -62,9 +62,9 @@ public class Controller : MonoBehaviour {
 
 
 
-        //string strCmdText;
-        //strCmdText = "/C python main.py";
-        //System.Diagnostics.Process.Start("CMD.exe", strCmdText);
+        string strCmdText;
+        strCmdText = "/C python main.py";
+        System.Diagnostics.Process.Start("CMD.exe", strCmdText);
 
     }
  
@@ -91,8 +91,9 @@ public class Controller : MonoBehaviour {
 
 
         HingeJoint[] snakeNodes ;
-        int numberofnodes = 20;
-            snakeNodes = snake7.GetComponentsInChildren<HingeJoint>();
+       
+        string numberofnodes = System.IO.File.ReadAllText("numberOfJoints.txt");
+        snakeNodes = snake7.GetComponentsInChildren<HingeJoint>();
         foreach (GameObject snake in snakes)
         {
             if (snake.name.ToLower() == "snake" + numberofnodes.ToString())

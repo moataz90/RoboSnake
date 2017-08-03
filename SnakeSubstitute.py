@@ -12,8 +12,8 @@ class SnakeSubstitute:
         abs_angles = [0 for i in range(self.num_joints)]
         for i in range(0, self.num_joints):
             if i % 2 == 0:
-                abs_angles[i] = A_h * math.sin(w * t + p_h)
+                abs_angles[i] = A_h * math.sin(w * t + i*p_h*2)
             else:
-                abs_angles[i] = A_v * math.sin(w * t + p_v)
+                abs_angles[i] = A_v * math.sin(w * t + i*p_v*2)
         return abs_angles
 
