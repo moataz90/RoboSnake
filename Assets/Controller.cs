@@ -3,22 +3,38 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using System;
-
+using System.Text.RegularExpressions;
 
 public class Controller : MonoBehaviour {
 
-//    PythonEngine engine = new PythonEngine();
-//    engine.LoadAssembly(Assembly.GetAssembly(typeof(GameObject)));
-//engine.ExecuteFile("apple.py");
-    
-    public Light HeadLight;
-    public GameObject SnakeHead;
-    public GameObject SnakeNode1;
-    public GameObject SnakeNode2;
-    public GameObject SnakeNode3;
-    public GameObject SnakeNode4;
-    public GameObject SnakeNode5;
-    public GameObject SnakeTail;
+    //    PythonEngine engine = new PythonEngine();
+    //    engine.LoadAssembly(Assembly.GetAssembly(typeof(GameObject)));
+    //engine.ExecuteFile("apple.py");
+
+    //public Light HeadLight;
+    //public GameObject SnakeHead;
+    //public GameObject SnakeNode1;
+    //public GameObject SnakeNode2;
+    //public GameObject SnakeNode3;
+    //public GameObject SnakeNode4;
+    //public GameObject SnakeNode5;
+    //public GameObject SnakeTail;
+
+
+    public GameObject snake7;
+    public GameObject snake8;
+    public GameObject snake9;
+    public GameObject snake10;
+    public GameObject snake11;
+    public GameObject snake12;
+    public GameObject snake13;
+    public GameObject snake14;
+    public GameObject snake15;
+    public GameObject snake16;
+    public GameObject snake17;
+    public GameObject snake18;
+    public GameObject snake19;
+    public GameObject snake20;
 
     public HingeJoint  hinge;
     public JointLimits jointLimit;
@@ -35,8 +51,8 @@ public class Controller : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-       ResetButton.GetComponent<Button>().onClick.AddListener(ResetClick);
-       ForwardButton.GetComponent<Button>().onClick.AddListener(ForwardClick);
+        ResetButton.GetComponent<Button>().onClick.AddListener(ResetClick);
+        ForwardButton.GetComponent<Button>().onClick.AddListener(ForwardClick);
         FastForwardButton.GetComponent<Button>().onClick.AddListener(FastForwardClick);
         RollButton.GetComponent<Button>().onClick.AddListener(RollClick);
 
@@ -44,9 +60,11 @@ public class Controller : MonoBehaviour {
 
 
 
-        string strCmdText;
-        strCmdText = "/C python main.py";
-        System.Diagnostics.Process.Start("CMD.exe", strCmdText);
+
+
+        //string strCmdText;
+        //strCmdText = "/C python main.py";
+        //System.Diagnostics.Process.Start("CMD.exe", strCmdText);
 
     }
  
@@ -54,15 +72,52 @@ public class Controller : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
+        Transform[] snakesTrans;
+        snakesTrans = this.gameObject.GetComponentsInChildren<Transform>();
+        List<GameObject> snakes = new List<GameObject>();
+        foreach (Transform trans in snakesTrans)
+        {
+            //if (trans.parent == this.gameObject)
+            //    snakesGameObjects.Add(trans.gameObject);
+
+            //if (trans.parent.name == "Snakes")
+            //    snakesGameObjects.Add(trans.gameObject);
+
+            if (Regex.IsMatch(trans.gameObject.name, @"snake[0-9]*$", RegexOptions.IgnoreCase))
+                snakes.Add(trans.gameObject);
+        }
+
+
+
+
+        HingeJoint[] snakeNodes ;
+        int numberofnodes = 20;
+            snakeNodes = snake7.GetComponentsInChildren<HingeJoint>();
+        foreach (GameObject snake in snakes)
+        {
+            if (snake.name.ToLower() == "snake" + numberofnodes.ToString())
+            {
+                snakeNodes = snake.GetComponentsInChildren<HingeJoint>();
+                snake.SetActive(true);
+                snake.transform.position = new Vector3(0, 0, 0);
+
+            }
+            else
+            {
+                snake.SetActive(false);
+            }
+
+        }
+        
 
         List<GameObject> gameObjects = new List<GameObject>();
-        gameObjects.Add(SnakeHead);
-        gameObjects.Add(SnakeNode1);
-        gameObjects.Add(SnakeNode2);
-        gameObjects.Add(SnakeNode3);
-        gameObjects.Add(SnakeNode4);
-        gameObjects.Add(SnakeNode5);
-        //gameObjects.Add(SnakeTail);
+        foreach (HingeJoint hinge in snakeNodes)
+        {
+            gameObjects.Add(hinge.gameObject);
+        }
+
+         gameObjects.Reverse();
+
 
 
         string joint_angles = System.IO.File.ReadAllText("joint_angles.txt");
@@ -91,7 +146,7 @@ public class Controller : MonoBehaviour {
         //}
 
     }
-       void ResetClick()
+    void ResetClick()
         {
         System.IO.File.WriteAllText("joint_angles.txt", "0:0&1:0&2:0&3:0&4:0&5:0");
         System.IO.File.WriteAllText("CurrentCommand.txt", "");
@@ -113,7 +168,7 @@ public class Controller : MonoBehaviour {
     }
     void FastForwardClick()
     {
-        System.IO.File.WriteAllText("CurrentCommand.txt", "Roll");
+        System.IO.File.WriteAllText("CurrentCommand.txt", "FastForward");
         Debug.Log("Reset Pressed");
     }
 
@@ -136,4 +191,8 @@ public class Controller : MonoBehaviour {
             System.IO.File.WriteAllText("joint_angles.txt", joint_angles);
         }
     }
+
+
+
+
 }
