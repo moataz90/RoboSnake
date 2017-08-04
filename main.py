@@ -54,7 +54,7 @@ def main():
         # using pygame python library (pygame.org)
         import pygame
     except:
-        print("piGame Failed")
+        print("PyGame not found")
     try:
         # pygame initialization stuff
         pygame.init()
@@ -62,9 +62,10 @@ def main():
         controller = pygame.joystick.Joystick(0)
         controller.init()
         mode = "controller"
-        print("controller")
+        print("mode is: controller")
     except:
         mode = "mouse"
+        print("mode is: mouse")
 
     # initialize angles
     angles = [0 for i in range(num_joints)]
@@ -83,10 +84,8 @@ def main():
             # possible gaits: Forward, Roll
             if hat == (0, 1):
                 gait = 'Forward'
-                print("hat 0 1")
             elif hat == (1, 0):
                 gait = 'Roll'
-                print("hat 1 0")
             elif controller.get_axis(1) < -0.7:
                 gait = 'FastForward'
             else:
