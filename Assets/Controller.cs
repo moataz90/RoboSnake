@@ -149,7 +149,14 @@ public class Controller : MonoBehaviour {
     }
     void ResetClick()
         {
-        System.IO.File.WriteAllText("joint_angles.txt", "0:0&1:0&2:0&3:0&4:0&5:0");
+        int numberofnodes = int.Parse(System.IO.File.ReadAllText("numberOfJoints.txt"));
+        string joints = "";
+        for (int i = 0; i < numberofnodes; i++)
+        {
+            joints += (i-1 == numberofnodes)? "0:" + i  : "0:" + i + "&";
+
+        }
+        System.IO.File.WriteAllText("joint_angles.txt", joints);
         System.IO.File.WriteAllText("CurrentCommand.txt", "");
         Debug.Log("Reset Pressed");
         }
