@@ -7,33 +7,10 @@ using System.Text.RegularExpressions;
 
 public class Controller : MonoBehaviour {
 
-    //    PythonEngine engine = new PythonEngine();
-    //    engine.LoadAssembly(Assembly.GetAssembly(typeof(GameObject)));
-    //engine.ExecuteFile("apple.py");
-
-    //public Light HeadLight;
-    //public GameObject SnakeHead;
-    //public GameObject SnakeNode1;
-    //public GameObject SnakeNode2;
-    //public GameObject SnakeNode3;
-    //public GameObject SnakeNode4;
-    //public GameObject SnakeNode5;
-    //public GameObject SnakeTail;
 
 
     public GameObject snake7;
     public GameObject snake8;
-    public GameObject snake9;
-    public GameObject snake10;
-    public GameObject snake11;
-    public GameObject snake12;
-    public GameObject snake13;
-    public GameObject snake14;
-    public GameObject snake15;
-    public GameObject snake16;
-    public GameObject snake17;
-    public GameObject snake18;
-    public GameObject snake19;
     public GameObject snake20;
 
     public HingeJoint  hinge;
@@ -72,16 +49,12 @@ public class Controller : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
+        //retrive all Snake models from the scene
         Transform[] snakesTrans;
         snakesTrans = this.gameObject.GetComponentsInChildren<Transform>();
         List<GameObject> snakes = new List<GameObject>();
         foreach (Transform trans in snakesTrans)
         {
-            //if (trans.parent == this.gameObject)
-            //    snakesGameObjects.Add(trans.gameObject);
-
-            //if (trans.parent.name == "Snakes")
-            //    snakesGameObjects.Add(trans.gameObject);
 
             if (Regex.IsMatch(trans.gameObject.name, @"snake[0-9]*$", RegexOptions.IgnoreCase))
                 snakes.Add(trans.gameObject);
@@ -89,9 +62,8 @@ public class Controller : MonoBehaviour {
 
 
 
-
+        //Select the snake model depending on the number of nodes
         HingeJoint[] snakeNodes ;
-       
         string numberofnodes = System.IO.File.ReadAllText("numberOfJoints.txt");
         snakeNodes = snake7.GetComponentsInChildren<HingeJoint>();
         foreach (GameObject snake in snakes)
@@ -111,6 +83,7 @@ public class Controller : MonoBehaviour {
         }
         
 
+        //Get all gameobject node of the selected snake
         List<GameObject> gameObjects = new List<GameObject>();
         foreach (HingeJoint hinge in snakeNodes)
         {
@@ -120,7 +93,7 @@ public class Controller : MonoBehaviour {
          gameObjects.Reverse();
 
 
-
+        //set the joints of the snake model
         string joint_angles = System.IO.File.ReadAllText("joint_angles.txt");
         string[] angleList = joint_angles.Split('&');
         for (int i = 0; i < gameObjects.Count; i++)
@@ -139,14 +112,9 @@ public class Controller : MonoBehaviour {
         }
 
 
-        //if (Input.GetKey("up"))
-        //{    
-        //}
-        //else if (Input.GetKey("down"))
-        //{
-        //}
-
     }
+
+    //Interface functions
     void ResetClick()
         {
         int numberofnodes = int.Parse(System.IO.File.ReadAllText("numberOfJoints.txt"));
@@ -160,31 +128,25 @@ public class Controller : MonoBehaviour {
         System.IO.File.WriteAllText("CurrentCommand.txt", "");
         Debug.Log("Reset Pressed");
         }
-
-
-        void ForwardClick()
+    void ForwardClick()
         {
             System.IO.File.WriteAllText("CurrentCommand.txt", "Forward");
-             Debug.Log("Reset Pressed");
+             Debug.Log("Forward Pressed");
     }
-
-
-        void RollClick()
+    void RollClick()
         {
         System.IO.File.WriteAllText("CurrentCommand.txt", "Roll");
-        Debug.Log("Reset Pressed");
+        Debug.Log("Roll Pressed");
     }
     void FastForwardClick()
     {
         System.IO.File.WriteAllText("CurrentCommand.txt", "FastForward");
-        Debug.Log("Reset Pressed");
+        Debug.Log("Fast Forward Pressed");
     }
-
-
-
-
     void SliderValueChangeCheck()
     {
+
+
         int jointID = (SingleAngleField.text == "") ? -1 : int.Parse(SingleAngleField.text);
         if (jointID > -1)
         {
