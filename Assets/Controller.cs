@@ -63,7 +63,7 @@ public class Controller : MonoBehaviour {
 
 
         string strCmdText;
-        strCmdText = "/C python main.py";
+        strCmdText = "/C py -3 main.py";
         System.Diagnostics.Process.Start("CMD.exe", strCmdText);
 
     }
